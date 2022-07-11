@@ -8,7 +8,7 @@ import (
 
 var (
 	orders = map[int64]*Order{
-		123: &Order{Id: 1, PersonName: "Fede", ProductName: "Melba"},
+		123: &Order{Id: 123, PersonName: "Fede", ProductName: "Melba"},
 	}
 )
 
