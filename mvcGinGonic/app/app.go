@@ -1,15 +1,20 @@
 package app
 
 import (
-	"microservices-ex-app/mvc/controller"
-	"net/http"
+	"github.com/gin-gonic/gin"
 )
 
-func StartApp() {
-	http.HandleFunc("/orders", controller.GetOrder)
+var router *gin.Engine
 
-	if err := http.ListenAndServe("localhost:8084", nil); err != nil {
+func init() {
+	router = gin.Default()
+	//router = gin.New()
+}
+
+func StartApp() {
+	mapUrls()
+
+	if err := router.Run("localhost:8084"); err != nil {
 		panic(err)
 	}
-
 }

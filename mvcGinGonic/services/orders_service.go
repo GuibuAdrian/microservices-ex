@@ -1,8 +1,8 @@
 package services
 
 import (
-	"microservices-ex-app/mvc/domain"
-	"microservices-ex-app/mvc/utils"
+	"microservices-ex-app/mvcGinGonic/domain"
+	"microservices-ex-app/mvcGinGonic/utils"
 )
 
 type ordersService struct {

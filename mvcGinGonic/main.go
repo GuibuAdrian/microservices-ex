@@ -1,6 +1,8 @@
 package main
 
-import "microservices-ex-app/mvc/app"
+import (
+	"microservices-ex-app/mvcGinGonic/app"
+)
 
 func main() {
 	app.StartApp()

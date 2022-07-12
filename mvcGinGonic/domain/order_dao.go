@@ -3,13 +3,13 @@ package domain
 import (
 	"fmt"
 	"log"
-	"microservices-ex-app/mvc/utils"
+	"microservices-ex-app/mvcGinGonic/utils"
 	"net/http"
 )
 
 var (
 	orders = map[int64]*Order{
-		123: &Order{Id: 123, PersonName: "Fede", ProductName: "Melba"},
+		123: {Id: 123, PersonName: "Fede", ProductName: "Melba"},
 	}
 
 	OrderDao ordersDaoInterface

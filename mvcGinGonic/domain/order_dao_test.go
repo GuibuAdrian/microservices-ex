@@ -2,7 +2,7 @@ package domain
 
 import (
 	"github.com/stretchr/testify/assert"
-	"microservices-ex-app/mvc/services"
+	"microservices-ex-app/mvcGinGonic/services"
 	"net/http"
 	"testing"
 )

@@ -3,8 +3,8 @@ package services
 import (
 	"github.com/stretchr/testify/assert"
 	"log"
-	"microservices-ex-app/mvc/domain"
-	"microservices-ex-app/mvc/utils"
+	"microservices-ex-app/mvcGinGonic/domain"
+	"microservices-ex-app/mvcGinGonic/utils"
 	"net/http"
 	"testing"
 )
