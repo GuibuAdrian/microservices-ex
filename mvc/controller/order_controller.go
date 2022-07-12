@@ -25,7 +25,7 @@ func GetOrder(resp http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	order, apiErr := services.GetOrder(orderId)
+	order, apiErr := services.OrdersService.GetOrder(orderId)
 	if apiErr != nil {
 		jsonValue, _ := json.Marshal(apiErr)
 		resp.WriteHeader(apiErr.StatusCode)
