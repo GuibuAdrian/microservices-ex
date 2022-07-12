@@ -2,6 +2,7 @@ package domain
 
 import (
 	"github.com/stretchr/testify/assert"
+	"microservices-ex-app/mvc/services"
 	"net/http"
 	"testing"
 )
@@ -10,7 +11,7 @@ func TestGetOrderNoOrderFound(t *testing.T) {
 	// Initialization:
 
 	// Execution:
-	order, err := GetOrder(0)
+	order, err := services.OrdersService.GetOrder(0)
 
 	// Validation:
 	//		Using stretchr/testify library
@@ -33,7 +34,7 @@ func TestGetOrderNoOrderFound(t *testing.T) {
 }
 
 func TestGetOrderNoError(t *testing.T) {
-	order, err := GetOrder(123)
+	order, err := services.OrdersService.GetOrder(123)
 
 	assert.Nil(t, err)
 	assert.NotNil(t, order)
