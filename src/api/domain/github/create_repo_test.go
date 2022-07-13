@@ -31,12 +31,17 @@ func TestCreateRepoRequestAsJson(t *testing.T) {
 
 	fmt.Println(string(bytes))
 
+	assert.EqualValues(
+		t,
+		`{"name":"Golang Introduction","description":"A golang introduction repository","homepage":"https://github.com","private":true,"has_issues":false,"has_projects":true,"has_wiki":false}`,
+		string(bytes))
+
 	var target CreateRepoRequest
 
 	//Unmarshal takes an input byte array and a *pointer* that we're trying to fill using this json.
 	err = json.Unmarshal(bytes, &target)
 	assert.Nil(t, err)
 
-	assert.EqualValues(t, `{"name":"Golang Introduction","description":"A golang introduction repository","homepage":"https://github.com","private":true,"has_issues":false,"has_projects":true,"has_wiki":false}`,
-		string(bytes))
+	assert.EqualValues(t, target.Name, request.Name)
+	assert.EqualValues(t, target.HasIssues, request.HasIssues)
 }
