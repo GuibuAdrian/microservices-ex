@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func main() {
+func simpleGoRoutine() {
 	go helloWorld()
 	time.Sleep(1 * time.Millisecond) // If we don't wait at least 1 ml second the main routine finishes before helloWorld routine
 

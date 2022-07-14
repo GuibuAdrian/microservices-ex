@@ -93,6 +93,7 @@ func (s *repoService) CreateRepos(requests []repositories.CreateRepoRequest) (re
 func (s *repoService) handleRepoResults(wg *sync.WaitGroup, input chan repositories.CreateRepositoriesResult, output chan repositories.CreateReposResponse) {
 	var results repositories.CreateReposResponse
 
+	//Blocks the iteration until something closes input channel
 	for incomingEvent := range input {
 		repoResult := repositories.CreateRepositoriesResult{
 			Response: incomingEvent.Response,
