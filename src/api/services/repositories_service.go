@@ -1,10 +1,12 @@
 package services
 
 import (
+	"fmt"
 	"microservices-ex-app/src/api/config"
 	"microservices-ex-app/src/api/domain/github"
 	"microservices-ex-app/src/api/domain/repositories"
-	github_provider "microservices-ex-app/src/api/providers"
+	"microservices-ex-app/src/api/log"
+	githubprovider "microservices-ex-app/src/api/providers"
 	"microservices-ex-app/src/api/utils/errors"
 	"net/http"
 	"sync"
@@ -14,7 +16,7 @@ type repoService struct {
 }
 
 type repoServiceInterface interface {
-	CreateRepo(request repositories.CreateRepoRequest) (*repositories.CreateRepoResponse, errors.ApiError)
+	CreateRepo(clientId string, request repositories.CreateRepoRequest) (*repositories.CreateRepoResponse, errors.ApiError)
 	CreateRepos(request []repositories.CreateRepoRequest) (repositories.CreateReposResponse, errors.ApiError)
 }
 
@@ -26,7 +28,7 @@ func init() {
 	RepositoryService = &repoService{}
 }
 
-func (s *repoService) CreateRepo(input repositories.CreateRepoRequest) (*repositories.CreateRepoResponse, errors.ApiError) {
+func (s *repoService) CreateRepo(clientId string, input repositories.CreateRepoRequest) (*repositories.CreateRepoResponse, errors.ApiError) {
 	if err := input.Validate(); err != nil {
 		return nil, err
 	}
@@ -36,13 +38,15 @@ func (s *repoService) CreateRepo(input repositories.CreateRepoRequest) (*reposit
 		Description: input.Description,
 		Private:     false,
 	}
-
-	response, err := github_provider.CreateRepo(config.GetGitHubAccessToken(), request)
+	log.Info("about to send request to external api", fmt.Sprintf("client_id:%s", clientId), "status:pending")
+	response, err := githubprovider.CreateRepo(config.GetGitHubAccessToken(), request)
 	if err != nil {
+		log.Error("response obtained from external api", err, fmt.Sprintf("client_id:%s", clientId), "status:error")
 		apiErr := errors.NewApiError(err.StatusCode, err.Message)
 		return nil, apiErr
 	}
 
+	log.Info("response obtained from external api", fmt.Sprintf("client_id:%s", clientId), "status:success")
 	result := repositories.CreateRepoResponse{
 		Id:    response.ID,
 		Owner: response.Owner.Login,
@@ -113,7 +117,7 @@ func (s *repoService) createRepoConcurrent(input repositories.CreateRepoRequest,
 		return
 	}
 
-	result, err := s.CreateRepo(input) //Sends post request to GitHub to create a repository
+	result, err := s.CreateRepo("", input) //Sends post request to GitHub to create a repository
 	if err != nil {
 		output <- repositories.CreateRepositoriesResult{Error: err}
 		return
