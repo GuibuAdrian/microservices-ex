@@ -22,5 +22,5 @@ func GetUserByUsernameAndPassword(username string, password string) (*User, erro
 	if user == nil {
 		return nil, errors.NewNotFoundError("no user found with given parameters")
 	}
-	return nil, nil
+	return user, nil
 }
