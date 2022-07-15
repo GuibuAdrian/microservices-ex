@@ -1,11 +1,10 @@
 package services
 
 import (
-	"fmt"
 	"microservices-ex-app/src/api/config"
 	"microservices-ex-app/src/api/domain/github"
 	"microservices-ex-app/src/api/domain/repositories"
-	"microservices-ex-app/src/api/log"
+	"microservices-ex-app/src/api/log/option_b"
 	githubprovider "microservices-ex-app/src/api/providers"
 	"microservices-ex-app/src/api/utils/errors"
 	"net/http"
@@ -38,15 +37,27 @@ func (s *repoService) CreateRepo(clientId string, input repositories.CreateRepoR
 		Description: input.Description,
 		Private:     false,
 	}
-	log.Info("about to send request to external api", fmt.Sprintf("client_id:%s", clientId), "status:pending")
+	//option_a.Info("about to send request to external api", fmt.Sprintf("client_id:%s", clientId), "status:pending")
+	option_b.Info("about to send request to external api",
+		option_b.Field("client_id", clientId),
+		option_b.Field("status", "pending"),
+		option_b.Field("authenticated", clientId != ""))
 	response, err := githubprovider.CreateRepo(config.GetGitHubAccessToken(), request)
 	if err != nil {
-		log.Error("response obtained from external api", err, fmt.Sprintf("client_id:%s", clientId), "status:error")
+		//option_a.Error("response obtained from external api", err, fmt.Sprintf("client_id:%s", clientId), "status:error")
+		option_b.Error("response obtained from external api", err,
+			option_b.Field("client_id", clientId),
+			option_b.Field("status", "error"),
+			option_b.Field("authenticated", clientId != ""))
 		apiErr := errors.NewApiError(err.StatusCode, err.Message)
 		return nil, apiErr
 	}
 
-	log.Info("response obtained from external api", fmt.Sprintf("client_id:%s", clientId), "status:success")
+	//option_a.Info("response obtained from external api", fmt.Sprintf("client_id:%s", clientId), "status:success")
+	option_b.Info("response obtained from external api",
+		option_b.Field("client_id", clientId),
+		option_b.Field("status", "success"),
+		option_b.Field("authenticated", clientId != ""))
 	result := repositories.CreateRepoResponse{
 		Id:    response.ID,
 		Owner: response.Owner.Login,
