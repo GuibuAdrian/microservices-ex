@@ -72,6 +72,7 @@ func TestCreateRepoErrorFromGitHubMockingTheEntireService(t *testing.T) {
 
 	CreateRepo(c)
 	assert.EqualValues(t, http.StatusBadRequest, response.Code)
+
 	/*
 		var result errors.ApiError
 		err := json.Unmarshal(, &result)
